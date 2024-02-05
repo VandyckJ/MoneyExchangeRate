@@ -56,7 +56,7 @@ fetch(freecurrencyapi)
         if (exchangeRate) {
             const [amount, detectedCurrency] = label.split(' '); // splits the currency amount and its code (not working)
             console.log(amount)
-            currencyTransfer.innerText = `${amount} ${detectedCurrency} is equal to ${exchangeRate} ${currencyCode}`; // amount and detectedCurrency not working mentioned above^^
+            currencyTransfer.innerText = `${amount} ${detectedCurrency} is equal to ${exchangeRate * amount} ${currencyCode}`; // amount and detectedCurrency not working mentioned above^^
         } else {
             console.log(`No exchange rate found for ${currencyCode}`);
         }
