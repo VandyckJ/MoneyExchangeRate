@@ -40,28 +40,41 @@ class Freecurrencyapi {
 }
 
 const freecurrencyapi = 'https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_SJZ1VHADIu4kSUJwt9OPYNlWeRMVFlMqRhfxHffT&currencies=EUR';
-const currencyTransfer = document.getElementById('currency')
+const currencyTransfer = document.getElementById('currency');
+const detectedAmountLabel = document.getElementById('detectedAmount');
+const detectedCurrencyLabel = document.getElementById('detectedCurrency');
+var amount = detectedAmountLabel.innerText;
+var detectedCurrency = detectedCurrencyLabel.innerText;
+var currencyCodes;
+var currencyCode;
+var exchangeRate;
+
 fetch(freecurrencyapi)
     .then(response => response.json())
     .then(data => {
         // Gets the currency code from the API (USD, EUR, ...)
-        const currencyCodes = Object.keys(data.data);
-        const currencyCode = currencyCodes[0];
+        currencyCodes = Object.keys(data.data);
+        currencyCode = currencyCodes[0];
 
         // Gets the currency exchange rate in this case the EUR exchange rate
-        const exchangeRate = data.data[currencyCode];
+        exchangeRate = data.data[currencyCode];
         console.log('Exchange rate: ', exchangeRate);
 
         // Checks if there is any exchange rate or not and will change the text from the index file (Not working atm, need to retrieve the currency from the AI Call ('label'))
         if (exchangeRate) {
-            const [amount, detectedCurrency] = label.split(' '); // splits the currency amount and its code (not working)
+                 // splits the currency amount and its code (not working)
             console.log(amount)
-            currencyTransfer.innerText = `${amount} ${detectedCurrency} is equal to ${exchangeRate * amount} ${currencyCode}`; // amount and detectedCurrency not working mentioned above^^
+                 // amount and detectedCurrency not working mentioned above^^
         } else {
             console.log(`No exchange rate found for ${currencyCode}`);
         }
     });
 
-
-
+detectedAmountLabel.addEventListener("change", changeAIResult());
+    function changeAIResult() {
+        console.log('changeAI Called')
+        var amount = detectedAmountLabel.value; 
+        var detectedCurrency = detectedCurrencyLabel.innerText;
+        currencyTransfer.innerText = `${amount} ${detectedCurrency} is equal to ${exchangeRate * amount} EUR`;
+    }
 

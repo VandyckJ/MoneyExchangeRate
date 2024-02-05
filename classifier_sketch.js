@@ -3,7 +3,7 @@ var imageModelURL = 'https://teachablemachine.withgoogle.com/models/gdW3YkZff/';
 var video; // variable that will contain our videostream
 var flippedImage; // variable that will contain our flipped image of our videostream (because a webcam stream needs to be flipped - it's like a mirror)
 var label = ""; // placeholder for the label, the thing we want to classify, the output of our model
-
+var detectedAmount = document.getElementById('detectedAmount');
 
 /*
 	preload() function
@@ -72,6 +72,9 @@ function gotResult(error, results) {
     //console.log(results);
 
     // we only want the label of the first element (the highest confidence prediction)
+    if(results[0] != "None"){
+        detectedAmount.value = results[0].label.split('')[0];
+    }
     label = results[0].label;
     // Classifiy again! So we keep on looping
     classifyImage();
