@@ -1,9 +1,8 @@
 var classifier; // variable that will contain our trained model
-var imageModelURL = 'https://teachablemachine.withgoogle.com/models/2FIAanakI/'; // variable of our trained model's URL
+var imageModelURL = 'https://teachablemachine.withgoogle.com/models/gdW3YkZff/'; // variable of our trained model's URL
 var video; // variable that will contain our videostream
 var flippedImage; // variable that will contain our flipped image of our videostream (because a webcam stream needs to be flipped - it's like a mirror)
 var label = ""; // placeholder for the label, the thing we want to classify, the output of our model
-
 
 
 /*
@@ -35,7 +34,7 @@ function setup() {
     // Create the video / webcam stream
     video = createCapture(VIDEO);
     video.size(320, 240);
-	video.hide();
+    video.hide();
 
     // Start classifying
     classifyImage();
