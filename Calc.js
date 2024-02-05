@@ -56,6 +56,9 @@ fetch(freecurrencyapi)
         currencyCodes = Object.keys(data.data);
         currencyCode = currencyCodes[0];
 
+        var amount = detectedAmountLabel.value;
+        var detectedCurrency = detectedCurrencyLabel.innerText;
+
         // Gets the currency exchange rate in this case the EUR exchange rate
         exchangeRate = data.data[currencyCode];
         console.log('Exchange rate: ', exchangeRate);
@@ -64,17 +67,21 @@ fetch(freecurrencyapi)
         if (exchangeRate) {
                  // splits the currency amount and its code (not working)
             console.log(amount)
+            const exchange = exchangeRate * parseInt(amount);
+            currencyTransfer.innerText = `${amount} ${detectedCurrency} is equal to ${exchange} EUR`;
                  // amount and detectedCurrency not working mentioned above^^
         } else {
             console.log(`No exchange rate found for ${currencyCode}`);
         }
     });
 
-detectedAmountLabel.addEventListener("change", changeAIResult());
+
+
+detectedAmountLabel.addEventListener("change", fetch());
     function changeAIResult() {
         console.log('changeAI Called')
         var amount = detectedAmountLabel.value; 
         var detectedCurrency = detectedCurrencyLabel.innerText;
-        currencyTransfer.innerText = `${amount} ${detectedCurrency} is equal to ${exchangeRate * amount} EUR`;
+        currencyTransfer.innerText = `${amount} ${detectedCurrency} is equal to ${exchangeRate} EUR`;
     }
 
