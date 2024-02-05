@@ -1,59 +1,20 @@
-var classifier; // variable that will contain our trained model
-var imageModelURL = 'https://teachablemachine.withgoogle.com/models/gdW3YkZff/'; // variable of our trained model's URL
-var video; // variable that will contain our videostream
-var flippedImage; // variable that will contain our flipped image of our videostream (because a webcam stream needs to be flipped - it's like a mirror)
-var label = ""; // placeholder for the label, the thing we want to classify, the output of our model
-var detectedAmount = document.getElementById('detectedAmount');
+let classifier; // variable that will contain our trained model
+let imageModelURL = 'https://teachablemachine.withgoogle.com/models/gdW3YkZff/'; // variable of our trained model's URL
+let video; // variable that will contain our videostream
+let flippedImage; // variable that will contain our flipped image of our videostream (because a webcam stream needs to be flipped - it's like a mirror)
+let label = ""; // placeholder for the label, the thing we want to classify, the output of our model
+let detectedAmount = document.getElementById('detectedAmount');
 'use strict';
-
-class Freecurrencyapi {
-    baseUrl = 'https://api.freecurrencyapi.com/v1/';
-
-    constructor(apiKey = '') {
-        this.headers = {
-            apikey: apiKey
-        };
-    }
-
-    call (endpoint, params = {}) {
-        const paramString = new URLSearchParams({
-            ...params
-        }).toString();
-
-        return fetch(`${this.baseUrl}${endpoint}?${paramString}`, { headers: this.headers })
-            .then(response => response.json())
-            .then(data => {
-                return data;
-            });
-    }
-
-    status () {
-        return this.call('status');
-    }
-
-    currencies (params) {
-        return this.call('currencies', params);
-    }
-
-    latest (params) {
-        return this.call('latest', params);
-    }
-
-    historical (params) {
-        return this.call('historical', params);
-    }
-
-}
 
 const freecurrencyapi = 'https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_SJZ1VHADIu4kSUJwt9OPYNlWeRMVFlMqRhfxHffT&currencies=EUR';
 const currencyTransfer = document.getElementById('currency');
 const detectedAmountLabel = document.getElementById('detectedAmount');
 const detectedCurrencyLabel = document.getElementById('detectedCurrency');
-var amount = detectedAmountLabel.innerText;
-var detectedCurrency = detectedCurrencyLabel.innerText;
-var currencyCodes;
-var currencyCode;
-var exchangeRate;
+const amount = detectedAmountLabel.innerText;
+const detectedCurrency = detectedCurrencyLabel.innerText;
+let currencyCodes;
+let currencyCode;
+let exchangeRate;
 
 fetch(freecurrencyapi)
     .then(response => response.json())
@@ -62,8 +23,8 @@ fetch(freecurrencyapi)
         currencyCodes = Object.keys(data.data);
         currencyCode = currencyCodes[0];
 
-        var amount = detectedAmountLabel.value;
-        var detectedCurrency = detectedCurrencyLabel.innerText;
+        const amount = detectedAmountLabel.value;
+        const detectedCurrency = detectedCurrencyLabel.innerText;
 
         // Gets the currency exchange rate in this case the EUR exchange rate
         exchangeRate = data.data[currencyCode];
@@ -71,26 +32,24 @@ fetch(freecurrencyapi)
 
         // Checks if there is any exchange rate or not and will change the text from the index file (Not working atm, need to retrieve the currency from the AI Call ('label'))
         if (exchangeRate) {
-                 // splits the currency amount and its code (not working)
+            // splits the currency amount and its code (not working)
             console.log(amount)
             const exchange = exchangeRate * parseInt(amount);
             currencyTransfer.innerText = `${amount} ${detectedCurrency} is equal to ${exchange} EUR`;
-                 // amount and detectedCurrency not working mentioned above^^
+            // amount and detectedCurrency not working mentioned above^^
         } else {
             console.log(`No exchange rate found for ${currencyCode}`);
         }
     });
 
-
-
 detectedAmountLabel.addEventListener("change", fetch());
-    function changeAIResult() {
-        console.log('changeAI Called')
-        var amount = detectedAmountLabel.value; 
-        var detectedCurrency = detectedCurrencyLabel.innerText;
-        currencyTransfer.innerText = `${amount} ${detectedCurrency} is equal to ${amount * exchangeRate} EUR`;
-    }
 
+function changeAIResult() {
+    console.log('changeAI Called')
+    const amount = detectedAmountLabel.value;
+    const detectedCurrency = detectedCurrencyLabel.innerText;
+    currencyTransfer.innerText = `${amount} ${detectedCurrency} is equal to ${amount * exchangeRate} EUR`;
+}
 
 /*
 	preload() function
@@ -101,11 +60,8 @@ detectedAmountLabel.addEventListener("change", fetch());
 	Documentation: https://p5js.org/reference/#/p5/preload
 */
 function preload() {
-
     classifier = ml5.imageClassifier(imageModelURL + 'model.json');
-
 }
-
 
 /* 
 	setup() function 
@@ -159,15 +115,14 @@ function gotResult(error, results) {
     //console.log(results);
 
     // we only want the label of the first element (the highest confidence prediction)
-    if(results[0].label != "None"){
+    if (results[0].label !== "None") {
         detectedAmount.value = results[0].label.split(' ')[0];
-        
-    }
-    else{
+
+    } else {
         detectedAmount.value = 0;
     }
     changeAIResult();
     label = results[0].label;
-    // Classifiy again! So we keep on looping
+    // Classify again! So we keep on looping
     classifyImage();
 }
