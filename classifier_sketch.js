@@ -48,7 +48,7 @@ function changeAIResult() {
     console.log('changeAI Called')
     const amount = detectedAmountLabel.value;
     const detectedCurrency = detectedCurrencyLabel.innerText;
-    currencyTransfer.innerText = `${amount} ${detectedCurrency} is equal to ${amount * exchangeRate} EUR`;
+    currencyTransfer.innerText = `${amount} ${detectedCurrency} is equal to ${(Math.round((amount * exchangeRate) * 100) / 100).toFixed(2)} EUR`;
 }
 
 /*
